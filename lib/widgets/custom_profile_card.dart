@@ -1,16 +1,18 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:ui';
 
 import 'custom_asset_icon.dart';
 
-class CustomProfileCard extends StatelessWidget {
+class CustomProfileCard extends StatefulWidget {
   final String name;
   final String username;
   final String profileImageUrl;
   final List<String> imageUrls;
   final int likeCount;
   final int commentCount;
+  final bool isVerified;
   final VoidCallback onActionPressed;
 
   const CustomProfileCard({
@@ -21,8 +23,16 @@ class CustomProfileCard extends StatelessWidget {
     required this.imageUrls,
     required this.likeCount,
     required this.commentCount,
+    required this.isVerified,
     required this.onActionPressed,
   }) : super(key: key);
+
+  @override
+  _CustomProfileCardState createState() => _CustomProfileCardState();
+}
+
+class _CustomProfileCardState extends State<CustomProfileCard> {
+  int _current = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -35,28 +45,29 @@ class CustomProfileCard extends StatelessWidget {
               leading: Stack(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage(profileImageUrl),
-                    radius: 20, // Adjust the size as needed
+                    backgroundImage: AssetImage(widget.profileImageUrl),
+                    radius: 20,
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Image.asset(
-                      'assets/icons/verified_icon.png',
-                      width: 16, // Adjust the size as needed
-                      height: 16, // Adjust the size as needed
+                  if (widget.isVerified)
+                    Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Image.asset(
+                        'assets/icons/verified_icon.png',
+                        width: 16, // Adjust the size as needed
+                        height: 16, // Adjust the size as needed
+                      ),
                     ),
-                  ),
                 ],
               ),
               title: Text(
-                name,
+                widget.name,
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               subtitle: Text(
-                username,
+                widget.username,
                 style: GoogleFonts.roboto(
                   color: Colors.grey,
                 ),
@@ -67,7 +78,7 @@ class CustomProfileCard extends StatelessWidget {
                   width: 30,
                   height: 30,
                 ),
-                onPressed: onActionPressed,
+                onPressed: widget.onActionPressed,
               ),
             ),
             CarouselSlider(
@@ -76,8 +87,14 @@ class CustomProfileCard extends StatelessWidget {
                 enlargeCenterPage: true,
                 viewportFraction: 1.0,
                 autoPlay: false,
+                enableInfiniteScroll: false, // Stops infinite loop
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    _current = index;
+                  });
+                },
               ),
-              items: imageUrls.map((url) {
+              items: widget.imageUrls.map((url) {
                 return Builder(
                   builder: (BuildContext context) {
                     return Stack(
@@ -88,53 +105,79 @@ class CustomProfileCard extends StatelessWidget {
                           width: double.infinity,
                         ),
                         Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            height: 70,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.transparent,
-                                  Colors.black.withOpacity(0.7),
-                                ],
+                          bottom:
+                              10,
+                          left: 15,
+                          right: 15,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20.0),
+                            child: BackdropFilter(
+                              filter:
+                                  ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                              child: Container(
+                                padding: EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  border: Border.all(
+                                    color: Colors.white.withOpacity(0.2),
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 8,
+                                        horizontal: 12,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xFFFF6600).withOpacity(0.3),
+                                        borderRadius: BorderRadius.circular(22),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          AssetIcon(
+                                            assetName: 'assets/icons/like_icon.png',
+                                            color: Colors.black,
+                                          ),
+                                          SizedBox(width: 5),
+                                          Text(
+                                            '${widget.likeCount}/5',
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontFamily: 'Roboto',
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 15),
+                                    Row(
+                                      children: [
+                                        AssetIcon(
+                                          assetName: 'assets/icons/comment_icon.png',
+                                          color: Colors.black,
+                                        ),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          '${widget.commentCount}',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: 'Roboto',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Spacer(),
+                                    AssetIcon(
+                                      assetName: 'assets/icons/share_icon.png',
+                                      color: Colors.black,
+                                    ),
+                                    SizedBox(width: 15),
+                                  ],
+                                ),
+
                               ),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Row(
-                                  children: [
-                                    AssetIcon(
-                                        assetName: 'assets/icons/like_icon.png',
-                                        color: Colors.white),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      '$likeCount/5',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    AssetIcon(
-                                        assetName:
-                                            'assets/icons/comment_icon.png',
-                                        color: Colors.white),
-                                    SizedBox(width: 5),
-                                    Text(
-                                      '$commentCount',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                                AssetIcon(
-                                    assetName: 'assets/icons/share_icon.png',
-                                    color: Colors.white),
-                              ],
                             ),
                           ),
                         ),
@@ -147,14 +190,16 @@ class CustomProfileCard extends StatelessWidget {
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(imageUrls.length, (index) {
+              children: List.generate(widget.imageUrls.length, (index) {
                 return Container(
-                  width: 8.0,
-                  height: 8.0,
+                  width: _current == index ? 10.0 : 8.0,
+                  height: _current == index ? 10.0 : 8.0,
                   margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Theme.of(context).primaryColor,
+                    color: _current == index
+                        ? Color(0xFFFF6600)
+                        : Color(0xFFFF6600).withOpacity(0.5),
                   ),
                 );
               }),

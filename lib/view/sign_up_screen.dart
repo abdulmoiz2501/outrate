@@ -6,6 +6,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:out_rate/view/home_screen.dart';
 import '../themes/colors.dart';
+import '../widgets/bottom_nav_bar.dart';
 import '../widgets/custom_elevated_button.dart';
 
 class SignUp extends StatefulWidget {
@@ -285,7 +286,7 @@ class _SignUpState extends State<SignUp> {
                       backgroundColor: Colors.black,
                       text: 'Sign in',
                       onPressed: () {
-                        Get.to(()=>HomeScreen());
+                        Get.to(()=>BottomNavigation());
                       },
                       textColor: lightBackgroundColor,
                     ),
