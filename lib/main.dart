@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:out_rate/view/auth_screen.dart';
 import 'controllers/theme_controller.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -17,7 +16,7 @@ class MyApp extends StatelessWidget {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: themeController.theme,
-        home: AuthScreen(),
+        home: const AuthScreen(),
       );
     });
   }

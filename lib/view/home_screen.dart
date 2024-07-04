@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:out_rate/themes/colors.dart';
+import 'package:out_rate/view/message_list_screen.dart';
 import '../controllers/theme_controller.dart';
 import '../widgets/custom_profile_card.dart';
 
 class HomeScreen extends StatelessWidget {
+  final void Function(int) onItemSelected;
+
+  const HomeScreen({
+    super.key,
+    required this.onItemSelected,
+  });
   @override
   Widget build(BuildContext context) {
     final ThemeController themeController = Get.find();
@@ -52,7 +59,7 @@ class HomeScreen extends StatelessWidget {
               height: 26.0,
               fit: BoxFit.contain,
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Image.asset(
               'assets/images/splash_2.png',
               height: 18.0,
@@ -62,6 +69,15 @@ class HomeScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
+              onPressed: () {
+                // themeController.toggleTheme();
+                Get.to(() => MessagesListScreen());
+              },
+              icon: const Icon(
+                Icons.toggle_off,
+                color: darkBackgroundColor,
+              )),
+          IconButton(
             icon: Image.asset(
               'assets/icons/icon_search.png',
               height: 32.0,
@@ -69,9 +85,12 @@ class HomeScreen extends StatelessWidget {
             ),
             onPressed: () {
               print('Search button pressed');
+              onItemSelected(1);
             },
           ),
-          SizedBox(width: 10,),
+          const SizedBox(
+            width: 10,
+          ),
         ],
       ),
       body: ListView.builder(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:out_rate/themes/colors.dart';
+import 'package:out_rate/view/profile_screen.dart';
+import 'package:out_rate/view/search_screen.dart';
 
 import '../view/home_screen.dart';
 
@@ -11,14 +13,28 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int _selectedIndex = 0;
 
-  void _onItemTapped(int index) {
+  void onItemTapped(int index) {
+    print('this is called');
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  Widget _buildIcon(String assetName, int index) {
+  Widget _buildIcon(String assetName, int index, {bool? fromHomeScreen}) {
     bool isSelected = _selectedIndex == index;
+
+    if (index == 0) {
+      if (fromHomeScreen != null) {
+        if (fromHomeScreen) {
+          print(_selectedIndex);
+          if (_selectedIndex == 1) {
+            isSelected = true;
+          }
+          print(isSelected);
+        }
+      }
+    }
+
     return Image.asset(
       assetName,
       height: 24,
@@ -33,17 +49,21 @@ class _BottomNavigationState extends State<BottomNavigation> {
       body: IndexedStack(
         index: _selectedIndex,
         children: [
-          HomeScreen(),
+          HomeScreen(
+            onItemSelected: onItemTapped,
+          ),
+          SearchScreen(
+            onItemSelected: onItemTapped,
+          ),
           Container(
             child: Text('Podium'),
           ),
-         Container(), // Placeholder for the middle button
+
+          Container(), // Placeholder for the middle button
           Container(
             child: Text('Messages'),
           ),
-          Container(
-            child: Text('Profile'),
-          ),
+          ProfileScreen(),
         ],
       ),
       bottomNavigationBar: Stack(
@@ -52,7 +72,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         children: [
           Container(
             height: 60,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
@@ -70,21 +90,22 @@ class _BottomNavigationState extends State<BottomNavigation> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 IconButton(
-                  icon: _buildIcon('assets/icons/home_unselected.png', 0),
-                  onPressed: () => _onItemTapped(0),
+                  icon: _buildIcon('assets/icons/home_unselected.png', 0,
+                      fromHomeScreen: true),
+                  onPressed: () => onItemTapped(0),
                 ),
                 IconButton(
-                  icon: _buildIcon('assets/icons/podium_unselected.png', 1),
-                  onPressed: () => _onItemTapped(1),
+                  icon: _buildIcon('assets/icons/podium_unselected.png', 2),
+                  onPressed: () => onItemTapped(2),
                 ),
                 SizedBox(width: 48), // Space for the middle button
                 IconButton(
-                  icon: _buildIcon('assets/icons/message_unselected.png', 2),
-                  onPressed: () => _onItemTapped(3),
+                  icon: _buildIcon('assets/icons/message_unselected.png', 4),
+                  onPressed: () => onItemTapped(4),
                 ),
                 IconButton(
-                  icon: _buildIcon('assets/icons/profile_unselected.png', 3),
-                  onPressed: () => _onItemTapped(4),
+                  icon: _buildIcon('assets/icons/profile_unselected.png', 5),
+                  onPressed: () => onItemTapped(5),
                 ),
               ],
             ),
@@ -98,8 +119,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
               onPressed: () {
                 // Handle middle button press
               },
-              backgroundColor:primaryColor,
-              child: Image.asset('assets/icons/add_icon.png', height: 24, width: 24, ),
+              backgroundColor: primaryColor,
+              child: Image.asset(
+                'assets/icons/add_icon.png',
+                height: 24,
+                width: 24,
+              ),
               //child: Icon(Icons.add, color: Colors.white),
             ),
           ),

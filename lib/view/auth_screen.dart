@@ -29,28 +29,28 @@ class AuthScreen extends StatelessWidget {
             bottom: 0,
             child: Container(
               height: MediaQuery.of(context).size.height * 0.4,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30.0),
                   topRight: Radius.circular(30.0),
                 ),
               ),
-              padding: EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   CustomButton(
-                    backgroundColor: Color(0xFFBDBDBD),
+                    backgroundColor: const Color(0xFFBDBDBD),
                     text: 'Sign in with your email',
                     onPressed: () {
-                      Get.to(()=> SignIn());
+                      Get.to(() => const SignIn());
                       // Handle button press
                     },
                     textColor: darkBackgroundColor,
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.07),
                   RichText(
                     text: TextSpan(
                       text: 'Not a member? ',
@@ -68,14 +68,13 @@ class AuthScreen extends StatelessWidget {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               print('Sign up now clicked');
-                              Get.to(()=> SignUp());
+                              Get.to(() => const SignUp());
                               // Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen()));
                             },
                         ),
                       ],
                     ),
                   ),
-
                   Image.asset(
                     'assets/images/splash_1.png',
                     width: MediaQuery.of(context).size.width * 0.12,
