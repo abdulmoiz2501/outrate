@@ -1,31 +1,116 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:out_rate/themes/colors.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:out_rate/view/settings_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+class MyProfileScreen extends StatelessWidget {
+  const MyProfileScreen({super.key});
+
+  void _showCustomPopupMenu(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withOpacity(0.6),
+      builder: (BuildContext context) {
+        return Stack(
+          children: [
+            Positioned(
+              top: kToolbarHeight + 10,
+              right: 10,
+              child: Material(
+                color: Colors.transparent,
+                child: Container(
+                  width: 150,
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 10,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Get.snackbar('Block', 'User has been blocked.');
+                        },
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Icon(Icons.block, color: Colors.black),
+                              SizedBox(width: 8),
+                              Text('Block'),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          Get.snackbar('Share', 'Share the user profile.');
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              Image.asset(
+                                'assets/icons/send_icon.png',
+                                height: 24,
+                                width: 24,
+                                color: darkBackgroundColor,
+                              ),
+                              const SizedBox(width: 8),
+                              const Text('Share'),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: Icon(
-          Icons.menu,
-          color: darkBackgroundColor,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            onPressed: () {
+              Get.to(() => const SettingsScreen());
+            },
             icon: Icon(
-              Icons.more_horiz,
+              Icons.menu,
               color: darkBackgroundColor,
             ),
-          )
-        ],
-      ),
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.more_horiz,
+                color: Colors.black,
+              ),
+              onPressed: () => _showCustomPopupMenu(context),
+            ),
+          ]),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -98,13 +183,12 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    // primary: primaryColor,
                     backgroundColor: primaryColor,
                     fixedSize: Size(MediaQuery.of(context).size.width * 0.4,
-                        MediaQuery.of(context).size.width * 0.1),
+                        MediaQuery.of(context).size.width * 0.12),
                   ),
                   onPressed: () {},
-                  child: Text('Follow',
+                  child: Text('Edit Profile',
                       style: GoogleFonts.roboto(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -113,16 +197,14 @@ class ProfileScreen extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(MediaQuery.of(context).size.width * 0.4,
-                        MediaQuery.of(context).size.width * 0.1),
-                    elevation: 5,
+                        MediaQuery.of(context).size.width * 0.12),
+                    elevation: 15,
                     foregroundColor: Colors.white,
-
-                    // onPrimary: darkBackgroundColor,
                     shadowColor: Colors.black.withOpacity(0.2),
                   ),
                   onPressed: () {},
                   child: Text(
-                    'Message',
+                    'Share',
                     style: GoogleFonts.roboto(
                       color: darkBackgroundColor,
                       fontWeight: FontWeight.bold,

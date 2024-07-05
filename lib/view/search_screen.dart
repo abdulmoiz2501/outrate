@@ -63,13 +63,16 @@ class _SearchScreenState extends State<SearchScreen> {
                   decoration: InputDecoration(
                     hintText: 'Search...',
                     // prefixIcon: Icon(Icons.search),
-                    suffixIcon: Image.asset(
-                      'assets/icons/icon_search.png',
+                    suffixIcon: Padding(
+                      padding: const EdgeInsetsDirectional.only(end: 8.0),
+                      child: Image.asset(
+                        'assets/icons/icon_search.png',
 
-                      // fit: BoxFit.cover,
+                        // fit: BoxFit.cover,
+                      ),
                     ),
                     suffixIconConstraints:
-                        const BoxConstraints(maxHeight: 24, maxWidth: 24),
+                        const BoxConstraints(maxHeight: 32, maxWidth: 32),
 
                     filled: true,
                     fillColor: Color(0xFF9797BD).withOpacity(0.15),

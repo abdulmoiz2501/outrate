@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:out_rate/themes/colors.dart';
+import 'package:out_rate/view/leaderboard_screen.dart';
+import 'package:out_rate/view/my_profile_screen.dart';
 import 'package:out_rate/view/profile_screen.dart';
 import 'package:out_rate/view/search_screen.dart';
 
@@ -55,15 +57,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
           SearchScreen(
             onItemSelected: onItemTapped,
           ),
-          Container(
-            child: Text('Podium'),
-          ),
+          LeaderboardScreen(),
 
           Container(), // Placeholder for the middle button
           Container(
             child: Text('Messages'),
           ),
-          ProfileScreen(),
+          const MyProfileScreen(),
         ],
       ),
       bottomNavigationBar: Stack(
